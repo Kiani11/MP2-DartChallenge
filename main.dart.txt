@@ -1,0 +1,117 @@
+import 'dart:math';
+//Bautista, Shane Kian B.
+//IT 302
+// Class representing a Song
+class Song {
+  String title;
+  String artist;
+  int minutes; // Duration in minutes
+  int seconds; // Duration in seconds
+
+  // Constructor to initialize a Song object
+  Song(this.title, this.artist, this.minutes, this.seconds);
+
+  // Method to get the duration of the song in seconds
+  int getDurationInSeconds() {
+    return minutes * 60 + seconds;
+  }
+
+  // Method to display song information
+  void display() {
+    // Format the minutes and seconds
+    String minStr = minutes.toString().padLeft(2, '0');
+    String secStr = seconds.toString().padLeft(2, '0');
+    print('$title by $artist ($minStr:$secStr)');
+  }
+}
+
+// Class representing a Playlist (Stage at the music festival)
+class Playlist {
+  String name;
+  List<Song> songs = []; // List to hold songs in the playlist
+
+  // Constructor to initialize a Playlist object
+  Playlist(this.name);
+
+  // Method to add a song to the playlist
+  void addSong(Song song) {
+    songs.add(song);
+  }
+
+  // Method to display all songs in the playlist
+  void displaySongs() {
+    print('Playlist: $name');
+    for (var song in songs) {
+      song.display();
+    }
+  }
+
+  // Method to get a random song from the playlist
+  Song getRandomSong() {
+    return songs[Random().nextInt(songs.length)];
+  }
+
+  // Method to sort the playlist by artist name
+  void sortSongsByArtist() {
+    songs.sort((a, b) => a.artist.compareTo(b.artist));
+  }
+
+  // Method to get the total duration of the playlist in seconds
+  int totalDurationInSeconds() {
+    return songs.fold(0, (sum, song) => sum + song.getDurationInSeconds());
+  }
+}
+
+// Class representing a MusicFestival
+class MusicFestival {
+  String name;
+  List<Playlist> stages = []; // List to hold stages (playlists) in the festival
+
+  // Constructor to initialize a MusicFestival object
+  MusicFestival(this.name);
+
+  // Method to add a stage to the festival
+  void addStage(Playlist stage) {
+    stages.add(stage);
+  }
+
+  // Method to get the total duration of all music played at the festival in seconds
+  int totalFestivalDurationInSeconds() {
+    return stages.fold(0, (sum, stage) => sum + stage.totalDurationInSeconds());
+  }
+
+  // Method to display random songs from each stage
+  void displayRandomSongs() {
+    print('Random Songs:');
+    for (var stage in stages) {
+      print('${stage.name}: ${stage.getRandomSong().title} by ${stage.getRandomSong().artist} (${stage.getRandomSong().minutes}:${stage.getRandomSong().seconds.toString().padLeft(2, '0')})');
+    }
+  }
+}
+
+// Main method to demonstrate the functionality
+void main() {
+  // Creating songs
+  var song1 = Song('We Made It', 'Flow G', 4, 4);
+  var song2 = Song('Rapstar', 'Flow G', 3, 23);
+  var song3 = Song('Gwolf', 'Flow G', 5, 23);
+  var song4 = Song('Burgis', 'Flow G', 4, 43);
+  var song5 = Song('Araw Araw Love', 'Flow G', 4, 8);
+
+  // Creating playlists (stages)
+  var mainStage = Playlist('Main Stage');
+  mainStage.addSong(song1);
+  mainStage.addSong(song2);
+  mainStage.addSong(song3);
+  mainStage.addSong(song4);
+  mainStage.addSong(song5);
+
+  var indieStage = Playlist('Indie Stage');
+  indieStage.addSong(song1); // Adding example song to Indie Stage
+  indieStage.addSong(song4); // Adding example song to Indie Stage
+
+  var electronicStage = Playlist('Electronic Stage');
+  electronicStage.addSong(song2);
+  electronicStage.addSong(song5);
+
+}
